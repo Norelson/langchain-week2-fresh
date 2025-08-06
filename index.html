@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>LangChain Client</title>
+  </head>
+  <body>
+    <h2>Ask the AI to write a poem</h2>
+
+    <input type="text" id="topicInput" placeholder="Enter topic" />
+    <button onclick="generate()">Generate</button>
+    <pre id="output"></pre>
+
+    <script>
+      async function generate() {
+        const topic = document.getElementById("topicInput").value;
+
+        try {
+          const response = await fetch("/generate", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ topic })
+          });
+
+          const data = await response.json();
+          console.log("Response:", data); // Debug log
+
+          document.getElementById("output").textContent =
+            data.result || "No result returned.";
+        } catch (error) {
+          console.error("Fetch error:", error); // Debug log
+
+          document.getElementById("output").textContent =
+            "An error occurred while generating the poem.";
+        }
+      }
+    </script>
+  </body>
+</html>
